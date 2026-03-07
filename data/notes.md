@@ -1,7 +1,14 @@
-Food cost data sourced from MIT Living Wage Calculator.
+Dataset Sources
 
-Income data sourced from U.S. Census Bureau and Bureau of Labor Statistics.
+Food Cost Estimates
+Source: MIT Living Wage Calculator
+https://livingwage.mit.edu
 
-All datasets retrieved March 2026.
+Income Estimates
+Source: U.S. Census Bureau & BLS wage statistics
 
-Some datasets provide annual values that will be converted to monthly values during preprocessing.
+Food cost estimates represent the USDA low-cost food plan
+used by the MIT Living Wage methodology.
+
+Values represent approximate statewide averages.
+Retrieved March 2026.
