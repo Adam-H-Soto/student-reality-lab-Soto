@@ -19,6 +19,7 @@ type TooltipState = {
 interface MonthlyAnnualChartProps {
   rows: StateFoodData[];
   group: AffordabilityGroup;
+  onGroupChange: (group: AffordabilityGroup) => void;
 }
 
 const WIDTH = 1200;
@@ -27,7 +28,7 @@ const MARGIN = { top: 28, right: 20, bottom: 125, left: 70 };
 const TOOLTIP_WIDTH = 320;
 const TOOLTIP_HEIGHT = 140;
 
-export default function MonthlyAnnualChart({ rows, group }: MonthlyAnnualChartProps) {
+export default function MonthlyAnnualChart({ rows, group, onGroupChange }: MonthlyAnnualChartProps) {
   const [mode, setMode] = useState<ViewMode>("monthly");
   const [tooltip, setTooltip] = useState<TooltipState>(null);
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
@@ -125,7 +126,20 @@ export default function MonthlyAnnualChart({ rows, group }: MonthlyAnnualChartPr
     <section className="material-card w-full space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-[26px] font-bold text-[#212121]">Monthly vs Annual Grocery Burden</h2>
-        <div className="flex items-center gap-2 text-[16px] text-[#757575]">
+        <div className="flex flex-wrap items-center gap-2 text-[16px] text-[#757575]">
+          <label className="flex items-center gap-2">
+            <span className="font-bold text-[#212121]">Group</span>
+            <select
+              aria-label="Select affordability group"
+              value={group}
+              onChange={(event) => onGroupChange(event.target.value as AffordabilityGroup)}
+              className="material-control px-3 py-1.5"
+            >
+              <option value="college-student">College Student</option>
+              <option value="recent-graduate">Recent Graduate</option>
+              <option value="young-adult">Young Adult</option>
+            </select>
+          </label>
           <button
             type="button"
             aria-label="Switch to monthly grocery burden view"

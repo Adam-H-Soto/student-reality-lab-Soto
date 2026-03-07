@@ -15,6 +15,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [mapGroup, setMapGroup] = useState<AffordabilityGroup>("college-student");
   const [rankingGroup, setRankingGroup] = useState<AffordabilityGroup>("college-student");
+  const [monthlyAnnualGroup, setMonthlyAnnualGroup] = useState<AffordabilityGroup>("college-student");
+  const [scatterGroup, setScatterGroup] = useState<AffordabilityGroup>("college-student");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -58,8 +60,8 @@ export default function Home() {
         <>
           <AffordabilityMap rows={rows} group={mapGroup} onGroupChange={setMapGroup} />
           <BarChart rows={rows} group={rankingGroup} onGroupChange={setRankingGroup} />
-          <MonthlyAnnualChart rows={rows} group={mapGroup} />
-          <FoodInsecurityScatter rows={rows} group={mapGroup} />
+          <MonthlyAnnualChart rows={rows} group={monthlyAnnualGroup} onGroupChange={setMonthlyAnnualGroup} />
+          <FoodInsecurityScatter rows={rows} group={scatterGroup} onGroupChange={setScatterGroup} />
         </>
       )}
     </main>

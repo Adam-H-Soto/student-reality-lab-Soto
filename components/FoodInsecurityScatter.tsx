@@ -22,6 +22,7 @@ interface RatioRangeOption {
 interface FoodInsecurityScatterProps {
   rows: StateFoodData[];
   group: AffordabilityGroup;
+  onGroupChange: (group: AffordabilityGroup) => void;
 }
 
 const WIDTH = 980;
@@ -38,7 +39,7 @@ function formatMoney(value: number): string {
   }).format(value);
 }
 
-export default function FoodInsecurityScatter({ rows, group }: FoodInsecurityScatterProps) {
+export default function FoodInsecurityScatter({ rows, group, onGroupChange }: FoodInsecurityScatterProps) {
   const [bracket, setBracket] = useState<string>("all");
   const [tooltip, setTooltip] = useState<TooltipState>(null);
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
@@ -172,7 +173,20 @@ export default function FoodInsecurityScatter({ rows, group }: FoodInsecuritySca
     <section className="material-card w-full space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-[26px] font-bold text-[#212121]">Food Insecurity vs Affordability</h2>
-        <div className="flex items-center gap-2 text-[16px] text-[#757575]">
+        <div className="flex flex-wrap items-center gap-2 text-[16px] text-[#757575]">
+          <label className="flex items-center gap-2">
+            <span className="font-bold text-[#212121]">Group</span>
+            <select
+              aria-label="Select affordability group"
+              value={group}
+              onChange={(event) => onGroupChange(event.target.value as AffordabilityGroup)}
+              className="material-control px-2 py-1.5"
+            >
+              <option value="college-student">College Student</option>
+              <option value="recent-graduate">Recent Graduate</option>
+              <option value="young-adult">Young Adult</option>
+            </select>
+          </label>
           <label htmlFor="bracket" className="font-bold text-[#212121]">
             Filter
           </label>
