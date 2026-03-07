@@ -2,7 +2,14 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import Papa from "papaparse";
 
-import type { StateFoodData } from "./schema";
+interface LegacyStateFoodData {
+	state: string;
+	annual_food_cost: number;
+	median_young_adult_income: number;
+	monthly_food_cost: number;
+	monthly_income: number;
+	grocery_income_ratio: number;
+}
 
 interface RawStateFoodRow {
 	state?: string;
@@ -20,7 +27,7 @@ function parseNumericField(value: string | undefined, fieldName: string, rowNumb
 	return parsed;
 }
 
-export async function loadStateFoodData(): Promise<StateFoodData[]> {
+export async function loadStateFoodData(): Promise<LegacyStateFoodData[]> {
 	const csvPath = path.join(process.cwd(), "data", "raw_state_food_income.csv");
 	const csvContent = await readFile(csvPath, "utf-8");
 
