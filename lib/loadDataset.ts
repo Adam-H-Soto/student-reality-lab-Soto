@@ -12,6 +12,9 @@ interface RawGroceryGapRow {
   food_insecurity_rate?: string;
 }
 
+let cachedDataset: StateFoodData[] | null = null;
+let inFlightDatasetLoad: Promise<StateFoodData[]> | null = null;
+
 function parseNumber(value: string | undefined): number | null {
   if (value === undefined || value.trim() === "") {
     return null;
@@ -22,56 +25,73 @@ function parseNumber(value: string | undefined): number | null {
 }
 
 export async function loadDataset(): Promise<StateFoodData[]> {
-  const csvPath = path.join(process.cwd(), "data", "grocery_gap_clean.csv");
-  const csvContent = await readFile(csvPath, "utf-8");
-
-  const parsed = Papa.parse<RawGroceryGapRow>(csvContent, {
-    header: true,
-    skipEmptyLines: true,
-  });
-
-  if (parsed.errors.length > 0) {
-    throw new Error(`Failed to parse CSV: ${parsed.errors[0]?.message ?? "Unknown parse error"}`);
+  if (cachedDataset) {
+    return cachedDataset;
   }
 
-  const cleanedRows: StateFoodData[] = [];
+  if (inFlightDatasetLoad) {
+    return inFlightDatasetLoad;
+  }
 
-  for (const row of parsed.data) {
-    const state = row.state?.trim();
-    const population = parseNumber(row.population);
-    const medianIncome = parseNumber(row.median_income);
-    const groceryCostIndex = parseNumber(row.grocery_cost_index);
-    const foodInsecurityRate = parseNumber(row.food_insecurity_rate);
+  inFlightDatasetLoad = (async () => {
+    const csvPath = path.join(process.cwd(), "data", "grocery_gap_clean.csv");
+    const csvContent = await readFile(csvPath, "utf-8");
 
-    // Skip rows with missing/invalid required values.
-    if (
-      !state ||
-      population === null ||
-      medianIncome === null ||
-      groceryCostIndex === null ||
-      foodInsecurityRate === null
-    ) {
-      continue;
-    }
-
-    const monthlyFoodCost = (medianIncome * groceryCostIndex) / 12 / 100;
-    const monthlyIncome = medianIncome / 12;
-
-    if (monthlyIncome === 0) {
-      continue;
-    }
-
-    cleanedRows.push({
-      state,
-      population,
-      median_income: medianIncome,
-      grocery_cost_index: groceryCostIndex,
-      food_insecurity_rate: foodInsecurityRate,
-      monthly_food_cost: monthlyFoodCost,
-      monthly_income: monthlyIncome,
-      grocery_income_ratio: monthlyFoodCost / monthlyIncome,
+    const parsed = Papa.parse<RawGroceryGapRow>(csvContent, {
+      header: true,
+      skipEmptyLines: true,
     });
-  }
 
-  return cleanedRows;
+    if (parsed.errors.length > 0) {
+      throw new Error(`Failed to parse CSV: ${parsed.errors[0]?.message ?? "Unknown parse error"}`);
+    }
+
+    const cleanedRows: StateFoodData[] = [];
+
+    for (const row of parsed.data) {
+      const state = row.state?.trim();
+      const population = parseNumber(row.population);
+      const medianIncome = parseNumber(row.median_income);
+      const groceryCostIndex = parseNumber(row.grocery_cost_index);
+      const foodInsecurityRate = parseNumber(row.food_insecurity_rate);
+
+      // Skip rows with missing/invalid required values.
+      if (
+        !state ||
+        population === null ||
+        medianIncome === null ||
+        groceryCostIndex === null ||
+        foodInsecurityRate === null
+      ) {
+        continue;
+      }
+
+      const monthlyFoodCost = (medianIncome * groceryCostIndex) / 12 / 100;
+      const monthlyIncome = medianIncome / 12;
+
+      if (monthlyIncome === 0) {
+        continue;
+      }
+
+      cleanedRows.push({
+        state,
+        population,
+        median_income: medianIncome,
+        grocery_cost_index: groceryCostIndex,
+        food_insecurity_rate: foodInsecurityRate,
+        monthly_food_cost: monthlyFoodCost,
+        monthly_income: monthlyIncome,
+        grocery_income_ratio: monthlyFoodCost / monthlyIncome,
+      });
+    }
+
+    cachedDataset = cleanedRows;
+    return cleanedRows;
+  })();
+
+  try {
+    return await inFlightDatasetLoad;
+  } finally {
+    inFlightDatasetLoad = null;
+  }
 }

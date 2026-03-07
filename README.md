@@ -1,5 +1,8 @@
 # Adam Soto - student-reality-lab-Soto - IS219
 
+## Live Demo
+Try the live site here: https://student-reality-lab-soto.vercel.app/
+
 # The Grocery Gap: Food Affordability for Young Adults Across the United States
 
 ## Essential Question
@@ -72,7 +75,7 @@ A chart showing the percentage of income spent on groceries by state.
 **View 3 --- Interaction**\
 Users can adjust variables including:
 
--   Age group (student, recent graduate, young professional)
+-   Age group (student, recent graduate, young adult)
 -   Estimated grocery spending
 -   State selection
 
@@ -157,13 +160,12 @@ The data pipeline will:
 1.  Standardize state names
 2.  Convert annual income into monthly income
 3.  Convert food costs to monthly per-person values
-4.  Calculate grocery affordability using:
+4.  Remove incomplete records
+5.  Calculate grocery affordability using:
 
 ``` ts
 grocery_income_ratio = monthly_food_cost / monthly_income
 ```
-
-5.  Remove incomplete records
 
 ### What This Dataset Cannot Prove
 
@@ -175,6 +177,12 @@ This dataset cannot account for:
 
 Therefore results represent **general affordability trends rather than
 exact personal budgets**.
+
+## Limits & What I’d Do Next
+- Data is limited to average grocery costs and may not reflect local variations within a state.  
+- Charts assume income scaling is linear; real-world budgets may vary.  
+- Interactions are limited to predefined groups; additional demographic filters could add insight.  
+- Future improvements could include: dynamic food price updates, region-specific income data, and mobile optimization refinements.
 
 ------------------------------------------------------------------------
 

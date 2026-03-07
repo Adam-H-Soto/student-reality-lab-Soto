@@ -24,7 +24,10 @@ export default function Home() {
     async function run() {
       try {
         setLoading(true);
-        const response = await fetch("/api/states", { signal: controller.signal });
+        const response = await fetch("/api/states", {
+          signal: controller.signal,
+          cache: "force-cache",
+        });
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
