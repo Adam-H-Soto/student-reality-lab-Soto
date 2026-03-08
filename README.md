@@ -194,7 +194,9 @@ Future improvements could include:
 Screenshot of an early exploratory chart used during the planning stage.
 
 Example chart concept:
-**Bar chart showing grocery cost as a percentage of income by state**
+<img width="600" height="371" alt="Grocery Cost as a Percentage of Income by State" src="https://github.com/user-attachments/assets/73f549de-6cf9-412c-bda4-251dbaaace7c" />
+
+This exploratory chart was created during the planning phase to verify that grocery affordability could be compared across states using percentage-of-income metrics.
 
 Why this chart answers the question:
 
