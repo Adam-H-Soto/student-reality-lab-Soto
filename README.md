@@ -1,200 +1,202 @@
-# Adam Soto - student-reality-lab-Soto - IS219
-
-## Live Demo
-Try the live site here: https://student-reality-lab-soto.vercel.app/
-
 # The Grocery Gap: Food Affordability for Young Adults Across the United States
 
-## Essential Question
+### Adam Soto – IS219 – Student Reality Lab
 
-What percentage of a young adult's income is required to afford
-groceries in each U.S. state?
+## Live Demo
 
-This project examines how grocery affordability varies geographically
-and whether food costs place a disproportionate financial burden on
-students, recent graduates, and young professionals.
+Try the live site here:
+https://student-reality-lab-soto.vercel.app/
 
-------------------------------------------------------------------------
+---
 
-## Claim (Hypothesis)
+# Essential Question
 
-Grocery affordability varies significantly across U.S. states, with
-high-cost states requiring more than **double the share of income for
-groceries** compared to the most affordable states.
+What share of income must young adults spend on groceries in different U.S. states?
 
-------------------------------------------------------------------------
+This project examines how grocery affordability varies geographically and whether food costs place a disproportionate financial burden on students, recent graduates, and young professionals.
 
-## Audience
+---
+
+# Claim (Hypothesis)
+
+Grocery affordability varies significantly across U.S. states, with some states requiring **more than twice the share of income for groceries** compared to the most affordable states.
+
+---
+
+# Audience
 
 This project is designed for:
 
--   College students
--   Recent graduates
--   Young professionals
--   Educators interested in cost-of-living differences
+* College students
+* Recent graduates
+* Young professionals
+* Educators interested in cost-of-living differences
 
-The goal is to help viewers understand how grocery affordability differs
-depending on where they live.
+The goal is to help viewers understand how grocery affordability differs depending on where they live.
 
-------------------------------------------------------------------------
+---
 
-## STAR Draft
+# STAR Draft
 
-### Situation
+## Situation
 
-Food prices have increased significantly in recent years, creating
-financial pressure for students and young adults. While national
-statistics track inflation, they often fail to show how grocery
-affordability varies geographically.
+Food prices have increased significantly in recent years, creating financial pressure for students and young adults. While national statistics track inflation, they often fail to show how grocery affordability varies geographically.
 
-Young adults moving to different states for school or employment may
-face very different food costs relative to their income.
+Young adults moving to different states for school or employment may face very different food costs relative to their income.
 
-### Task
+---
+
+## Task
 
 The viewer should be able to determine:
 
--   How grocery costs vary by state
--   What percentage of income young adults spend on groceries
--   Which states are most and least affordable for food
+* How grocery costs vary by state
+* What percentage of income young adults spend on groceries
+* Which states are most and least affordable for food
 
-By the end of the interaction, users should understand whether groceries
-represent a manageable expense or a major financial burden depending on
-location.
+By the end of the interaction, users should understand whether groceries represent a manageable expense or a major financial burden depending on location.
 
-### Action
+---
 
-This project will build an interactive data story with four views.
+## Action
 
-**View 1 --- Geographic Context**\
-A visualization showing grocery cost differences across U.S. states.
+This project builds an interactive data story composed of several coordinated visualizations.
 
-**View 2 --- Evidence**\
-A chart showing the percentage of income spent on groceries by state.
+**View 1 — Geographic Context**
+A map visualization showing how grocery affordability varies across U.S. states.
 
-**View 3 --- Interaction**\
-Users can adjust variables including:
+**View 2 — Evidence**
+A comparison chart highlighting the most and least affordable states for groceries relative to income.
 
--   Age group (student, recent graduate, young adult)
--   Estimated grocery spending
--   State selection
+**View 3 — Interaction**
+Users can interact with the visualization using:
 
-The visualization will update dynamically.
+* Income group selector (College Student, Recent Graduate, Young Adult)
+* Monthly vs Annual grocery cost toggle
 
-**View 4 --- Comparison**\
-A ranked chart highlighting the most affordable and least affordable
-states.
+These controls allow viewers to see how grocery affordability changes as income levels change and how costs accumulate over time.
 
-### Result (Expected)
+**View 4 — Comparison**
+Additional visual comparisons highlight the states with the highest and lowest grocery burden relative to income.
 
-The project is expected to demonstrate that grocery affordability varies
-widely across the United States.
+---
 
-Some states may require more than **twice the share of income for
-groceries** compared to others.
+## Result (Expected)
 
-Key metrics reported will include:
+The project demonstrates that grocery affordability varies widely across the United States.
 
--   Monthly grocery costs
--   Percentage of income spent on groceries
+When income assumptions change across students, recent graduates, and young adults, the overall burden decreases, but many of the same states remain consistently more expensive relative to income.
 
-------------------------------------------------------------------------
+Key metrics shown include:
 
-## Dataset & Provenance
+* Monthly grocery costs
+* Annual grocery costs
+* Percentage of income spent on groceries
 
-Food cost estimates will come from:
+---
 
--   MIT Living Wage Calculator
--   U.S. Department of Agriculture
+# Dataset & Provenance
 
-Income estimates will come from:
+Food cost estimates were derived from:
 
--   U.S. Census Bureau
--   U.S. Bureau of Labor Statistics
+* MIT Living Wage Calculator
+* U.S. Department of Agriculture
 
-**Retrieval date:** March 2026
+Income estimates were derived from:
 
-These sources provide geographic estimates for both income and food
-costs.
+* U.S. Census Bureau
+* U.S. Bureau of Labor Statistics
 
-------------------------------------------------------------------------
+**Retrieval Date:** March 2026
 
-## Data Dictionary
+These sources provide geographic estimates for both income and food costs used to estimate grocery affordability.
 
-  -----------------------------------------------------------------------
-  Column                  Meaning                 Units
-  ----------------------- ----------------------- -----------------------
-  state                   U.S. state name         text
+---
 
-  monthly_food_cost       Estimated monthly       USD
-                          grocery spending per    
-                          person                  
+# Data Dictionary
 
-  annual_income           Median annual income    USD
-                          for young adults        
+| Column               | Meaning                                        | Units      |
+| -------------------- | ---------------------------------------------- | ---------- |
+| state                | U.S. state name                                | text       |
+| monthly_food_cost    | Estimated monthly grocery spending per person  | USD        |
+| annual_income        | Estimated annual income for the selected group | USD        |
+| monthly_income       | Monthly equivalent income                      | USD        |
+| grocery_income_ratio | Share of income spent on groceries             | percentage |
 
-  monthly_income          Monthly equivalent      USD
-                          income                  
+---
 
-  grocery_income_ratio    Share of income spent   percentage
-                          on groceries            
-  -----------------------------------------------------------------------
+# Data Viability Audit
 
-------------------------------------------------------------------------
+## Missing Values + Potential Issues
 
-## Data Viability Audit
+Potential issues in the dataset include:
 
-### Missing Values + Weird Fields
+* Inconsistent state naming conventions across datasets
+* Food cost estimates originally calculated for households rather than individuals
+* Income datasets using different age brackets
 
-Potential issues include:
+---
 
--   Inconsistent state naming conventions
--   Food cost estimates calculated for households rather than
-    individuals
--   Income datasets using different age brackets
+## Cleaning Plan
 
-### Cleaning Plan
+The data pipeline performs the following steps:
 
-The data pipeline will:
+1. Standardizes state names
+2. Converts annual income into monthly income
+3. Converts food costs into monthly per-person estimates
+4. Removes incomplete records
+5. Calculates grocery affordability using the following formula:
 
-1.  Standardize state names
-2.  Convert annual income into monthly income
-3.  Convert food costs to monthly per-person values
-4.  Remove incomplete records
-5.  Calculate grocery affordability using:
-
-``` ts
+```ts
 grocery_income_ratio = monthly_food_cost / monthly_income
 ```
 
-### What This Dataset Cannot Prove
+---
+
+## What This Dataset Cannot Prove
 
 This dataset cannot account for:
 
--   Individual grocery spending habits
--   Dietary differences
--   Local price variation within states
+* Individual grocery spending habits
+* Dietary differences
+* Local price variation within states
 
-Therefore results represent **general affordability trends rather than
-exact personal budgets**.
+As a result, the analysis represents **general affordability trends rather than exact personal budgets**.
 
-## Limits & What I’d Do Next
-- Data is limited to average grocery costs and may not reflect local variations within a state.  
-- Charts assume income scaling is linear; real-world budgets may vary.  
-- Interactions are limited to predefined groups; additional demographic filters could add insight.  
-- Future improvements could include: dynamic food price updates, region-specific income data, and mobile optimization refinements.
+---
 
-------------------------------------------------------------------------
+# Technologies Used
 
-## Draft Chart Screenshot
+* Next.js
+* React
+* TypeScript
+* Data visualization components for charts and geographic mapping
+* Vercel for deployment
 
-*(Add a screenshot of a simple Excel or Google Sheets chart here.)*
+---
+
+# Limits & What I’d Do Next
+
+* Data is limited to average grocery costs and may not reflect local variations within a state.
+* Charts assume income scaling is linear, while real-world budgets may vary.
+* Interactions are limited to predefined income groups. Additional demographic filters could provide deeper insight.
+
+Future improvements could include:
+
+* More granular city-level food price data
+* Additional demographic comparisons
+* Dynamic updates using real-time cost-of-living data sources
+
+---
+
+# Draft Chart Screenshot
+
+Screenshot of an early exploratory chart used during the planning stage.
 
 Example chart concept:
-
-**Bar chart showing grocery cost as a percentage of income by state.**
+**Bar chart showing grocery cost as a percentage of income by state**
 
 Why this chart answers the question:
 
--   It directly measures grocery affordability.
--   It highlights geographic disparities between states.
+* It directly measures grocery affordability.
+* It highlights geographic disparities between states.
