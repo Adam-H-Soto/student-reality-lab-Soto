@@ -19,7 +19,7 @@ This project examines how grocery affordability varies geographically and whethe
 
 # Claim (Hypothesis)
 
-Grocery affordability varies significantly across U.S. states, with some states requiring **more than twice the share of income for groceries** compared to the most affordable states.
+Grocery affordability varies significantly across U.S. states, with some states requiring **substantially larger shares of income for groceries** compared to the most affordable states.
 
 ---
 
