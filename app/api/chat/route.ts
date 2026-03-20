@@ -4,10 +4,6 @@ import { aggregateAllStateData } from "@/lib/stateDataAggregator";
 import { formatCurrency, formatPercentage, formatScore } from "@/lib/formatData";
 import type { UnifiedStateData } from "@/lib/schema";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 function formatUnifiedStateData(state: UnifiedStateData): string {
   const lines = [
     `${state.state} (${state.state_code}):`,
@@ -169,6 +165,10 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
 
     // Build the system prompt with unified state data
     const systemPrompt = await buildSystemPrompt();
