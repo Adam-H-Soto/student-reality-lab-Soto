@@ -39,7 +39,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         );
       }
 
-      const response: { data: typeof stateData; cache_status?: string } = { data: stateData };
+      const response: { data: typeof stateData; cache_status?: ReturnType<typeof getCacheStatus> } = { data: stateData };
       if (includeCache) {
         response.cache_status = getCacheStatus();
       }
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     // Return all states
     const allStates = await aggregateAllStateData();
     
-    const response: { data: typeof allStates; count: number; timestamp: string; cache_status?: string } = {
+    const response: { data: typeof allStates; count: number; timestamp: string; cache_status?: ReturnType<typeof getCacheStatus> } = {
       data: allStates,
       count: allStates.length,
       timestamp: new Date().toISOString()
