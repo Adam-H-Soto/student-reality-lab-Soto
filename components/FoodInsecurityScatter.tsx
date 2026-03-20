@@ -287,7 +287,7 @@ export default function FoodInsecurityScatter({ rows, group, onGroupChange }: Fo
 
         {tooltip && (
           <div
-            className="pointer-events-none absolute z-30 w-[292px] rounded-md bg-[#212121] p-3 text-white shadow-lg"
+            className="pointer-events-none absolute z-30 w-73 rounded-md bg-[#212121] p-3 text-white shadow-lg"
             style={{ left: tooltip.left, top: tooltip.top }}
           >
             <p className="chart-label font-medium">{tooltip.item.state}</p>
@@ -301,16 +301,10 @@ export default function FoodInsecurityScatter({ rows, group, onGroupChange }: Fo
       </div>
 
       <div className="rounded-md bg-[#f5f5f5] p-4 text-[16px] leading-6 text-[#757575]">
-        The scatter plot connects affordability and food insecurity while keeping the two ratio extremes visible in
-        every group view. The highest-ratio state and lowest-ratio state are highlighted so you can compare their
-        vertical positions directly and see whether food insecurity tracks burden perfectly or only partially. That
-        distinction matters for students: a state may be among the least affordable yet not have the single highest
-        insecurity rate, which suggests additional social and policy factors influence outcomes beyond grocery prices
-        alone. The affordability-bracket filter helps narrow comparisons to similar burden levels, making outliers
-        easier to interpret. When you switch to College Student or Recent Graduate income assumptions, points shift
-        right as grocery burden rises, but not all points move upward in insecurity, reinforcing that affordability is
-        one major driver, not the only one. The key takeaway is to combine both extremes with trend context so
-        relocation decisions reflect real student risk rather than a single metric.
+        This scatter plot compares grocery-income ratio on the x-axis with food insecurity rate on the y-axis for each
+        state. Use Group to recalculate the ratio and use Filter to focus on specific affordability brackets. The
+        highlighted points mark the highest-ratio and lowest-ratio states in the selected group. Hover points to read
+        exact values for ratio percentage, food insecurity rate, and median income.
       </div>
     </section>
   );

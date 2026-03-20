@@ -322,7 +322,7 @@ export default function BarChart({ rows, group, onGroupChange }: BarChartProps) 
 
         {tooltip && (
           <div
-            className="pointer-events-none absolute z-30 w-[292px] rounded-md bg-[#212121] p-3 text-white shadow-lg"
+            className="pointer-events-none absolute z-30 w-73 rounded-md bg-[#212121] p-3 text-white shadow-lg"
             style={{ left: tooltip.left, top: tooltip.top }}
           >
             <p className="chart-label font-medium">{tooltip.item.state}</p>
@@ -336,14 +336,11 @@ export default function BarChart({ rows, group, onGroupChange }: BarChartProps) 
       </div>
 
       <div className="rounded-md bg-[#f5f5f5] p-4 text-[16px] leading-6 text-[#757575]">
-        This ranking chart makes the affordability gap explicit by sorting every state by grocery burden for the
-        selected group, either Highest First or Lowest First. The chart visually emphasizes one highest-burden state
-        and one lowest-burden state, while the summary box above lists the top three least affordable and top three
-        most affordable states with percentages. That combination keeps the view readable while still giving broader
-        context beyond a single winner and loser. As you switch among College Student, Recent Graduate, and Young
-        Adult, the rankings update to reflect how the same grocery costs affect different income levels. The practical
-        takeaway is to compare both the extremes and the top/bottom three range, since that spread better captures how
-        much location can influence monthly budget pressure.
+        This chart ranks states by grocery-income ratio for the selected group. Bar height is the percentage of income
+        spent on groceries, and the axis labels show those percentages directly. Use Group to recalculate the ratio for
+        College Student, Recent Graduate, or Young Adult income assumptions, and use Highest First/Lowest First to
+        reverse the ranking order. The highlighted bars mark the single highest-burden and lowest-burden states, while
+        the summary box lists the top three on each side for quick comparison.
       </div>
     </section>
   );

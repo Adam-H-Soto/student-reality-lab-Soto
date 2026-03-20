@@ -137,6 +137,9 @@ function interpolateHex(start: string, end: string, t: number): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
+const HIGHEST_OUTLINE_COLOR = "#800000"; // dark red (maroon)
+const LOWEST_OUTLINE_COLOR = "#1e3a8a"; // deep royal blue
+
 function normalizeFips(rawId: string | number | undefined): string | null {
   if (rawId === undefined) {
     return null;
@@ -193,16 +196,18 @@ export default function AffordabilityMap({ rows, group, onGroupChange }: Afforda
     return interpolateHex(activeColorRange.start, activeColorRange.end, t);
   }
 
-  function getStroke(stateName: string): { color: string; width: number } {
+  function getStateStyle(stateName: string): { fill: string; stroke: string; width: number } {
+    const baseFill = getFillColor(stateName);
+
     if (extremes.highest?.state === stateName) {
-      return { color: "#ff5722", width: 2.4 };
+      return { fill: baseFill, stroke: HIGHEST_OUTLINE_COLOR, width: 6.4 };
     }
 
     if (extremes.lowest?.state === stateName) {
-      return { color: "#3f51b5", width: 2.4 };
+      return { fill: baseFill, stroke: LOWEST_OUTLINE_COLOR, width: 5.2 };
     }
 
-    return { color: "#ffffff", width: 0.9 };
+    return { fill: baseFill, stroke: "#ffffff", width: 0.9 };
   }
 
   function handleMouseMove(
@@ -280,15 +285,18 @@ export default function AffordabilityMap({ rows, group, onGroupChange }: Afforda
               return null;
             }
 
-            const stroke = getStroke(stateName);
+            const stateStyle = getStateStyle(stateName);
 
             return (
               <path
                 key={String(stateFeature.id)}
                 d={d}
-                fill={getFillColor(stateName)}
-                stroke={stroke.color}
-                strokeWidth={stroke.width}
+                fill={stateStyle.fill}
+                stroke={stateStyle.stroke}
+                strokeWidth={stateStyle.width}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
                 className="transition-colors duration-150"
                 onMouseEnter={(event) => handleMouseMove(event, stateName, row)}
                 onMouseMove={(event) => handleMouseMove(event, stateName, row)}
@@ -300,7 +308,7 @@ export default function AffordabilityMap({ rows, group, onGroupChange }: Afforda
 
         {tooltip && (
           <div
-            className="pointer-events-none absolute z-20 w-[292px] rounded-md bg-[#212121] p-3 text-white shadow-lg"
+            className="pointer-events-none absolute z-20 w-73 rounded-md bg-[#212121] p-3 text-white shadow-lg"
             style={{ left: tooltip.left, top: tooltip.top }}
           >
             <p className="chart-label font-medium">{tooltip.stateName}</p>
@@ -320,17 +328,11 @@ export default function AffordabilityMap({ rows, group, onGroupChange }: Afforda
       </div>
 
       <div className="rounded-md bg-[#f5f5f5] p-4 text-[16px] leading-6 text-[#757575]">
-        The map gives a geographic overview of how hard groceries hit each budget group. Switching between College
-        Student, Recent Graduate, and Young Adult scales income while holding food cost constant, so darker states
-        represent places where groceries consume a larger share of available earnings. The most expensive state and
-        most affordable state are always highlighted to anchor interpretation, helping you compare extremes rather than
-        only mid-range patterns. For students, that contrast is the key story: two states can have similar headline
-        incomes, yet very different everyday affordability once grocery burden is normalized. When the student view is
-        selected, dark regions expand because lower effective income amplifies stress from the same food prices. In the
-        young-adult view, the burden narrows but the same states still tend to remain at the top and bottom, which
-        signals structural differences rather than random variation. The takeaway is practical and location-specific:
-        identify where grocery burden is persistently highest and where it remains lightest, then use that range to
-        plan relocation, school decisions, and realistic monthly budgeting.
+        This map shades each state by grocery-income ratio for the selected group, where darker colors indicate higher
+        budget burden. Use Group to switch between College Student, Recent Graduate, and Young Adult assumptions and
+        watch how the ratio changes geographically. Hover a state to see exact ratio percentage, median income, and
+        food insecurity rate. The highlighted extremes identify the highest-ratio and lowest-ratio states in the
+        current view so regional comparisons are immediate.
       </div>
     </section>
   );

@@ -240,16 +240,11 @@ export default function MonthlyAnnualChart({ rows, group, onGroupChange }: Month
       </div>
 
       <div className="rounded-md bg-[#f5f5f5] p-4 text-[16px] leading-6 text-[#757575]">
-        This view compares monthly and annual framing of grocery burden for the currently selected group, and it keeps
-        both the highest and lowest burden states visibly marked for context. In practice, these two views should tell
-        the same directional story, but showing both helps students translate between paycheck-level budgeting and
-        annual planning language used in salary discussions. The dual highlights are especially important: the highest
-        burden state represents a stress-test scenario where food costs consume a large share of income, while the
-        lowest burden state gives a realistic floor for what affordability can look like. When switching from Young
-        Adult to Recent Graduate and College Student, both bars move upward because the same grocery basket is divided
-        by smaller effective income. That shift demonstrates how quickly affordability can change with life stage, even
-        when prices stay fixed. For students, the practical takeaway is to evaluate states using both most- and
-        least-affordable anchors, then estimate your own monthly risk before committing to a location.
+        This view shows the same grocery burden metric in two modes: monthly percentage of monthly income and annual
+        percentage of annual income. Use Monthly View or Annual View to switch which percentage is plotted on the bars,
+        and use Group to recalculate values for each income profile. The highlighted bars identify the highest-burden
+        and lowest-burden states in the current mode so you can compare extremes quickly. Hover any bar to see both
+        monthly and annual percentages, plus median income and food insecurity for that state.
       </div>
     </section>
   );
