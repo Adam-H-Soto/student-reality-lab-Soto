@@ -14,6 +14,18 @@ interface Message {
   content: string;
 }
 
+function hasRequiredStateData(
+  state: UnifiedStateData | null | undefined,
+): state is UnifiedStateData {
+  return Boolean(
+    state &&
+      state.taxes &&
+      state.income &&
+      state.housing &&
+      state.lifestyle,
+  );
+}
+
 type VisualSection =
   | "none"
   | "map"
@@ -93,7 +105,7 @@ export default function StatisticsBot() {
             : [];
 
         setFoodRows(Array.isArray(foodPayload) ? foodPayload : []);
-        setUnifiedStates(statesData);
+        setUnifiedStates(statesData.filter(hasRequiredStateData));
       } catch (error) {
         if ((error as { name?: string }).name !== "AbortError") {
           console.error("Failed to load chatbot visual data", error);
