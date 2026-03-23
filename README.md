@@ -1,4 +1,4 @@
-# The Grocery Gap: Food Affordability for Young Adults Across the United States
+# YourNextMove : Food affordability & lifestyle data across the US
 
 ### Adam Soto – IS219 – Student Reality Lab
 
