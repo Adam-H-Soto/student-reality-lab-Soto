@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
+import Link from "next/link";
 import type { UnifiedStateData } from "@/lib/schema";
 import { formatScore, getSafetyColor } from "@/lib/formatData";
 
@@ -69,49 +70,56 @@ export default function StateSafetyPage() {
   return (
     <>
       <Navigation />
-      <main className="min-h-screen w-full bg-linear-to-br from-blue-50 to-white">
-        <div className="mx-auto max-w-6xl px-4 py-12">
-          <div className="mb-12 text-center">
-            <h1 className="mb-4 text-[48px] font-bold text-[#212121]">
-              Safety & Lifestyle
+      <main className="min-h-screen w-full bg-transparent">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <Link
+            href="/"
+            className="mb-8 inline-flex rounded-full border border-[#d6e0d2] bg-white px-4 py-2 text-sm text-[#4b5f68] transition-all hover:-translate-y-0.5 hover:shadow-sm"
+          >
+            ← Back to Home
+          </Link>
+          <div className="mb-12 max-w-3xl">
+            <h1 className="mb-4 text-[44px] font-semibold text-slate-900">
+              Safety and Lifestyle at a Glance
             </h1>
-            <p className="text-[18px] leading-7 text-[#757575]">
-              Compare safety indices, crime rates, and lifestyle amenities across all US states
+            <p className="text-[18px] leading-7 text-slate-600">
+              Compare safety, crime, and lifestyle trends across states in a quick, flexible view.
             </p>
+            <p className="mt-2 text-sm text-[#76828a]">Community members use this page to stay aware of what is changing around them.</p>
           </div>
 
           {/* Sort Controls */}
-          <div className="mb-8 bg-white rounded-lg border border-gray-200 p-6 shadow-md">
-            <label className="text-[16px] font-bold text-[#212121]">
+          <div className="mb-10 rounded-2xl border border-[#d8e3d8] bg-white p-7 shadow-[0_6px_18px_rgba(95,143,160,0.08)]">
+            <label className="text-[16px] font-semibold text-slate-900">
               Sort by:
             </label>
-            <div className="mt-3 flex gap-4">
+            <div className="mt-4 flex flex-wrap gap-3">
               <button
                 onClick={() => handleSortClick("safety")}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                className={`rounded-full px-4 py-2 font-medium transition-all ${
                   sortBy === "safety"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                    ? "bg-[#5f8fa0] text-white"
+                    : "bg-[#edf4ee] text-[#445962] hover:bg-[#e2eee4]"
                 }`}
               >
                 Safest{getSortIndicator("safety")}
               </button>
               <button
                 onClick={() => handleSortClick("crime")}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                className={`rounded-full px-4 py-2 font-medium transition-all ${
                   sortBy === "crime"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                    ? "bg-[#5f8fa0] text-white"
+                    : "bg-[#edf4ee] text-[#445962] hover:bg-[#e2eee4]"
                 }`}
               >
                 Crime Rate{getSortIndicator("crime")}
               </button>
               <button
                 onClick={() => handleSortClick("nightlife")}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                className={`rounded-full px-4 py-2 font-medium transition-all ${
                   sortBy === "nightlife"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                    ? "bg-[#5f8fa0] text-white"
+                    : "bg-[#edf4ee] text-[#445962] hover:bg-[#e2eee4]"
                 }`}
               >
                 Nightlife Score{getSortIndicator("nightlife")}
@@ -121,16 +129,16 @@ export default function StateSafetyPage() {
 
           {/* Safety Table */}
           {loading ? (
-            <div className="text-center text-[18px] text-[#757575]">Loading state data...</div>
+            <div className="text-center text-[18px] text-slate-600">Loading state data...</div>
           ) : (
             <>
-              <p className="mb-3 text-[14px] font-medium text-[#4b5563]">
-                Sorting by <span className="font-bold text-[#1f2937]">{sortBy === "safety" ? "Safety Index" : sortBy === "crime" ? "Crime Rate" : "Nightlife Score"}</span>,{" "}
-                <span className="font-bold text-[#1f2937]">{sortDirection === "desc" ? "Descending" : "Ascending"}</span>
+              <p className="mb-3 text-[14px] font-medium text-slate-600">
+                Showing <span className="font-semibold text-slate-800">{sortBy === "safety" ? "Safety Index" : sortBy === "crime" ? "Crime Rate" : "Nightlife Score"}</span>,{" "}
+                <span className="font-semibold text-slate-800">{sortDirection === "desc" ? "Descending" : "Ascending"}</span>
               </p>
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="overflow-hidden rounded-2xl border border-[#d8e3d8] bg-white shadow-[0_6px_18px_rgba(95,143,160,0.08)]">
               <table className="w-full">
-                <thead className="bg-purple-600 text-white">
+                <thead className="bg-[#6a8f80] text-white">
                   <tr>
                     <th className="px-6 py-4 text-left font-bold">State</th>
                     <th className="px-6 py-4 text-center font-bold">Safety Index</th>
@@ -145,7 +153,7 @@ export default function StateSafetyPage() {
                       key={state.state}
                       className={idx % 2 === 0 ? "bg-gray-50" : "bg-white"}
                     >
-                      <td className="px-6 py-4 font-semibold text-[#212121]">
+                      <td className="px-6 py-4 font-semibold text-slate-900">
                         {state.state}
                       </td>
                       <td className="px-6 py-4 text-center">
@@ -156,15 +164,15 @@ export default function StateSafetyPage() {
                           {formatScore(state.lifestyle.safety_index)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-center text-[#757575]">
+                      <td className="px-6 py-4 text-center text-slate-600">
                         {state.lifestyle.crime_rate
                           ? `${state.lifestyle.crime_rate.toFixed(0)}/100k`
                           : "N/A"}
                       </td>
-                      <td className="px-6 py-4 text-center text-[#757575]">
+                      <td className="px-6 py-4 text-center text-slate-600">
                         {formatScore(state.lifestyle.nightlife_score)}
                       </td>
-                      <td className="px-6 py-4 text-[14px] text-[#757575]">
+                      <td className="px-6 py-4 text-[14px] text-slate-600">
                         {state.lifestyle.top_industries.join(", ")}
                       </td>
                     </tr>
@@ -176,9 +184,9 @@ export default function StateSafetyPage() {
           )}
 
           {/* Info Box */}
-          <div className="mt-8 rounded-lg bg-purple-50 p-6 border-l-4 border-purple-600">
-            <h3 className="text-[18px] font-bold text-[#212121] mb-2">About These Metrics</h3>
-            <p className="text-[14px] text-[#757575]">
+          <div className="mt-10 rounded-2xl border-l-4 border-[#e7b576] bg-[#fff8ed] p-7">
+            <h3 className="mb-2 text-[18px] font-semibold text-slate-900">About These Metrics</h3>
+            <p className="text-[14px] text-slate-600">
               <strong>Safety Index:</strong> A normalized score (0-100) where higher values indicate safer communities.
               Calculated from crime data and public safety statistics. 
               <br /><br />

@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-import "@fontsource/roboto-mono/400.css";
-import "@fontsource/roboto-mono/500.css";
+import { Nunito, Nunito_Sans } from "next/font/google";
 import "./globals.css";
+
+const bodyFont = Nunito_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
+});
+
+const headingFont = Nunito({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  weight: ["500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: "YourNextMove",
   description:
-    "Ask our AI assistant any questions about grocery affordability, food insecurity patterns, lifestyle, income, housing, and more across the US.",
+    "Explore state affordability, food security, housing, taxes, and lifestyle data in a flexible, easy-to-use workspace.",
 };
 
 export default function RootLayout({
@@ -22,7 +30,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={`${bodyFont.variable} ${headingFont.variable} antialiased`}>
         {children}
         {showAnalytics ? <Analytics /> : null}
       </body>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import MonthlyAnnualChart from "@/components/MonthlyAnnualChart";
+import Link from "next/link";
 import type { AffordabilityGroup } from "@/lib/affordability";
 import type { StateFoodData } from "@/lib/schema";
 
@@ -32,7 +33,7 @@ export default function MonthlyAnnualPage() {
         setError(null);
       } catch (err) {
         if ((err as { name?: string }).name !== "AbortError") {
-          setError("Failed to load state data.");
+          setError("We could not load state data right now.");
         }
       } finally {
         setLoading(false);
@@ -46,19 +47,26 @@ export default function MonthlyAnnualPage() {
   return (
     <>
       <Navigation />
-      <main className="min-h-screen w-full bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-12">
-          <div className="mb-8">
-            <h1 className="mb-2 text-[40px] font-bold text-[#212121]">
-              📈 Monthly vs Annual Spending
+      <main className="min-h-screen w-full bg-transparent">
+        <div className="mx-auto max-w-7xl px-5 py-16">
+          <Link
+            href="/"
+            className="mb-8 inline-flex rounded-full border border-[#d6e0d2] bg-white px-4 py-2 text-sm text-[#4b5f68] transition-all hover:-translate-y-0.5 hover:shadow-sm"
+          >
+            ← Back to Home
+          </Link>
+          <div className="mb-10 max-w-3xl">
+            <h1 className="mb-2 text-[40px] font-semibold text-slate-900">
+              Monthly vs Annual Spending
             </h1>
-            <p className="text-[16px] leading-6 text-[#757575]">
-              Analyze the relationship between monthly and annual grocery expenditures. See how spending patterns vary for different demographic groups and identify seasonal trends.
+            <p className="text-[16px] leading-6 text-slate-600">
+              Compare monthly and annual costs in a simple view, then switch groups whenever you want.
             </p>
+            <p className="mt-2 text-sm text-[#76828a]">Others in your area use this view to spot patterns they can share back with neighbors.</p>
           </div>
 
-          {loading && <p className="text-[16px] text-[#757575]">Loading chart...</p>}
-          {error && <p className="text-[16px] text-[#e53935]">{error}</p>}
+          {loading && <p className="text-[16px] text-slate-600">Loading spending data...</p>}
+          {error && <p className="text-[16px] text-red-700">No one has shared updates here yet in this session. You can refresh and try again.</p>}
 
           {!loading && !error && (
             <MonthlyAnnualChart rows={rows} group={group} onGroupChange={setGroup} />

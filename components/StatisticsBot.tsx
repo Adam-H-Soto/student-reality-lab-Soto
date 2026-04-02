@@ -61,7 +61,7 @@ export default function StatisticsBot() {
     {
       role: "assistant",
       content:
-        "Welcome to YourNextMove! I'm your AI assistant for comprehensive lifestyle and affordability insights across the US. I can help you explore grocery affordability, food insecurity patterns, state taxes, income and housing costs, safety metrics, and more. Try asking about specific states, comparing regions, or finding data visualizations that match your interests!",
+        "Hi! I can help you explore state data on affordability, food insecurity, taxes, housing, and lifestyle. Ask about any state, compare a few, or choose a visual and we can dig in together.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -70,7 +70,9 @@ export default function StatisticsBot() {
   const [unifiedStates, setUnifiedStates] = useState<UnifiedStateData[]>([]);
   const [visualsLoading, setVisualsLoading] = useState(true);
   const [activeVisual, setActiveVisual] = useState<VisualSection>("none");
+  const [showNoVisualHint, setShowNoVisualHint] = useState(true);
   const [group, setGroup] = useState<AffordabilityGroup>("college-student");
+  const [communityConfirmation, setCommunityConfirmation] = useState<string | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -191,6 +193,8 @@ export default function StatisticsBot() {
       { role: "user", content: userMessage },
     ];
     setMessages(newMessages);
+    setCommunityConfirmation("Thanks for sharing. Your question helps others explore this data too.");
+    setTimeout(() => setCommunityConfirmation(null), 5000);
     setLoading(true);
 
     try {
@@ -221,7 +225,7 @@ export default function StatisticsBot() {
         ...prev,
         {
           role: "assistant",
-          content: "Sorry, I encountered an error. Please try again.",
+          content: "That did not go through. Could you check it and try again? I am here when you are ready.",
         },
       ]);
     } finally {
@@ -233,83 +237,89 @@ export default function StatisticsBot() {
     setActiveVisual((prev) => (prev === visual ? "none" : visual));
   };
 
+  const shouldShowVisualPanel =
+    visualsLoading || activeVisual !== "none" || showNoVisualHint;
+
   return (
-    <div className="flex h-[78vh] min-h-175 flex-col rounded-lg bg-gray-50">
+    <div className="flex h-[78vh] min-h-176 flex-col rounded-2xl border border-[#d8e2d6] bg-[#f8fbf5]">
         {/* Chat Header */}
-        <div className="border-b border-gray-200 bg-blue-600 px-6 py-4 rounded-t-lg">
-          <h3 className="text-lg font-semibold text-white">AI Statistics Assistant</h3>
-          <p className="text-sm text-blue-100">Ask questions or request map/chart/card views</p>
+        <div className="rounded-t-2xl border-b border-[#d8e2d6] bg-[#eaf3e8] px-6 py-4">
+          <h3 className="text-lg font-semibold text-[#2f3d46]">Chat Assistant</h3>
+          <p className="text-sm text-[#60717b]">Ask whatever feels useful, then switch views when you want a different angle.</p>
         </div>
 
         {/* Visual Selector (always visible) */}
-        <div className="border-b border-gray-200 bg-white px-6 py-3">
+        <div className="border-b border-[#d8e2d6] bg-white px-6 py-3">
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => handleVisualToggle("map")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "map" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "map" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               Map
             </button>
             <button
               onClick={() => handleVisualToggle("bar")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "bar" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "bar" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               Rankings Chart
             </button>
             <button
               onClick={() => handleVisualToggle("monthly")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "monthly" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "monthly" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               Monthly vs Annual
             </button>
             <button
               onClick={() => handleVisualToggle("scatter")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "scatter" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "scatter" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               Food Insecurity Scatter
             </button>
             <button
               onClick={() => handleVisualToggle("tax-cards")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "tax-cards" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "tax-cards" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               Tax Cards
             </button>
             <button
               onClick={() => handleVisualToggle("income-housing-cards")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "income-housing-cards" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "income-housing-cards" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               Income & Housing Cards
             </button>
             <button
               onClick={() => handleVisualToggle("safety-cards")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "safety-cards" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "safety-cards" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               Safety Cards
             </button>
             <button
               onClick={() => handleVisualToggle("state-profiles")}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${activeVisual === "state-profiles" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded-full border px-3 py-1.5 text-sm font-medium ${activeVisual === "state-profiles" ? "border-[#5f8fa0] bg-[#5f8fa0] text-white" : "border-[#d8e2d6] bg-[#f4f8f2] text-[#4a5f69]"}`}
             >
               State Profile Cards
             </button>
             <button
-              onClick={() => setActiveVisual("none")}
-              className="rounded-md px-3 py-1.5 text-sm font-semibold bg-gray-200 text-gray-800 hover:bg-gray-300"
+              onClick={() => {
+                setActiveVisual("none");
+                setShowNoVisualHint(false);
+              }}
+              className="rounded-full border border-[#d8e2d6] bg-[#f4f8f2] px-3 py-1.5 text-sm font-medium text-[#4a5f69] hover:bg-[#eaf3e8]"
             >
-              Hide Visual
+              Clear View
             </button>
           </div>
         </div>
 
         {/* Messages Container */}
-        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto space-y-4 px-6 py-4">
+        <div ref={messagesContainerRef} className="flex-1 space-y-4 overflow-y-auto px-6 py-4">
           {messages.map((msg, index) => (
             <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
                 className={`max-w-md rounded-lg px-4 py-2 ${
                   msg.role === "user"
-                    ? "bg-blue-600 text-white"
-                    : "bg-white border border-gray-200 text-gray-900"
+                    ? "bg-[#6a8f80] text-white"
+                    : "border border-[#d8e2d6] bg-white text-[#30404a]"
                 }`}
               >
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
@@ -318,22 +328,19 @@ export default function StatisticsBot() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="rounded-lg bg-white border border-gray-200 px-4 py-2">
-                <div className="flex space-x-2">
-                  <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce"></div>
-                  <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce delay-100"></div>
-                  <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce delay-200"></div>
-                </div>
+              <div className="rounded-lg border border-[#d8e2d6] bg-white px-4 py-2 text-sm text-[#60717b]">
+                Thinking this through...
               </div>
             </div>
           )}
 
-          <div className="mt-4 rounded-lg border border-gray-200 bg-white p-4">
+          {shouldShowVisualPanel && (
+          <div className="mt-4 rounded-xl border border-[#d8e2d6] bg-white p-4">
 
-            {visualsLoading && <p className="text-sm text-gray-600">Loading visual data...</p>}
-            {!visualsLoading && activeVisual === "none" && (
-              <p className="text-sm text-gray-600">
-                Ask for a map, chart, or cards in chat and the selected visual will render right here in this same chat window.
+            {visualsLoading && <p className="text-sm text-[#60717b]">Loading visual data...</p>}
+            {!visualsLoading && activeVisual === "none" && showNoVisualHint && (
+              <p className="text-sm text-[#60717b]">
+                No one has opened a visual in this chat yet. You can be the first and pick any view.
               </p>
             )}
 
@@ -362,29 +369,29 @@ export default function StatisticsBot() {
             )}
 
             {!visualsLoading && activeVisual === "tax-cards" && (
-              <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-3 text-lg font-bold text-gray-900">Tax Cards (Top 5 by Rate)</h4>
+              <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <h4 className="mb-3 text-lg font-semibold text-slate-900">Tax Summary (Top 5 by Rate)</h4>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Income Tax</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Income Tax</p>
                     {topTaxStates.withIncomeTax.map((state) => (
-                      <p key={`income-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`income-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: {formatPercentage(state.taxes.income_tax_rate, 2)}
                       </p>
                     ))}
                   </div>
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Sales Tax</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Sales Tax</p>
                     {topTaxStates.withSalesTax.map((state) => (
-                      <p key={`sales-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`sales-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: {formatPercentage(state.taxes.sales_tax_rate, 2)}
                       </p>
                     ))}
                   </div>
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Property Tax</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Property Tax</p>
                     {topTaxStates.withPropertyTax.map((state) => (
-                      <p key={`property-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`property-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: {formatPercentage(state.taxes.property_tax_rate, 2)}
                       </p>
                     ))}
@@ -394,21 +401,21 @@ export default function StatisticsBot() {
             )}
 
             {!visualsLoading && activeVisual === "income-housing-cards" && (
-              <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-3 text-lg font-bold text-gray-900">Income & Housing Cards</h4>
+              <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <h4 className="mb-3 text-lg font-semibold text-slate-900">Income and Housing Summary</h4>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Highest Median Income</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Highest Median Income</p>
                     {topIncomeHousing.highestIncome.map((state) => (
-                      <p key={`income-rank-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`income-rank-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: {formatCurrency(state.income.median_household_income)}
                       </p>
                     ))}
                   </div>
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Highest Home Prices</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Highest Home Prices</p>
                     {topIncomeHousing.highestHousing.map((state) => (
-                      <p key={`housing-rank-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`housing-rank-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: {formatCurrency(state.housing.median_home_price)}
                       </p>
                     ))}
@@ -418,29 +425,29 @@ export default function StatisticsBot() {
             )}
 
             {!visualsLoading && activeVisual === "safety-cards" && (
-              <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-3 text-lg font-bold text-gray-900">Safety & Lifestyle Cards</h4>
+              <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <h4 className="mb-3 text-lg font-semibold text-slate-900">Safety and Lifestyle Summary</h4>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Safest States</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Safest States</p>
                     {topSafetyLifestyle.safest.map((state) => (
-                      <p key={`safe-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`safe-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: {formatScore(state.lifestyle.safety_index)}
                       </p>
                     ))}
                   </div>
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Highest Crime Rate</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Highest Crime Rate</p>
                     {topSafetyLifestyle.highestCrime.map((state) => (
-                      <p key={`crime-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`crime-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: {state.lifestyle.crime_rate?.toFixed(0) ?? "N/A"}/100k
                       </p>
                     ))}
                   </div>
-                  <div className="rounded-md bg-white p-3">
-                    <p className="mb-2 font-semibold text-gray-900">Best Nightlife</p>
+                  <div className="rounded-md border border-slate-200 bg-white p-3">
+                    <p className="mb-2 font-semibold text-slate-900">Best Nightlife</p>
                     {topSafetyLifestyle.bestNightlife.map((state) => (
-                      <p key={`nightlife-${state.state}`} className="text-sm text-gray-700">
+                      <p key={`nightlife-${state.state}`} className="text-sm text-slate-700">
                         {state.state}: <span style={{ color: getSafetyColor(state.lifestyle.nightlife_score) }}>{formatScore(state.lifestyle.nightlife_score)}</span>
                       </p>
                     ))}
@@ -450,46 +457,51 @@ export default function StatisticsBot() {
             )}
 
             {!visualsLoading && activeVisual === "state-profiles" && (
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                <h4 className="mb-3 text-lg font-bold text-gray-900">State Profile Cards</h4>
+              <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <h4 className="mb-3 text-lg font-semibold text-slate-900">State Profile Cards</h4>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {stateProfiles.map((state) => (
-                    <div key={state.state} className="rounded-md bg-white p-3 shadow-sm">
-                      <p className="text-base font-bold text-gray-900">{state.state}</p>
-                      <p className="text-sm text-gray-700">Income: {formatCurrency(state.income.median_household_income)}</p>
-                      <p className="text-sm text-gray-700">Home Price: {formatCurrency(state.housing.median_home_price)}</p>
-                      <p className="text-sm text-gray-700">Safety: {formatScore(state.lifestyle.safety_index)}</p>
-                      <p className="text-sm text-gray-700">Food Insecurity: {formatPercentage(state.food_insecurity_rate, 1)}</p>
+                    <div key={state.state} className="rounded-md border border-slate-200 bg-white p-3 shadow-sm">
+                      <p className="text-base font-semibold text-slate-900">{state.state}</p>
+                      <p className="text-sm text-slate-700">Income: {formatCurrency(state.income.median_household_income)}</p>
+                      <p className="text-sm text-slate-700">Home Price: {formatCurrency(state.housing.median_home_price)}</p>
+                      <p className="text-sm text-slate-700">Safety: {formatScore(state.lifestyle.safety_index)}</p>
+                      <p className="text-sm text-slate-700">Food Insecurity: {formatPercentage(state.food_insecurity_rate, 1)}</p>
                     </div>
                   ))}
                 </div>
               </div>
             )}
           </div>
+          )}
         </div>
 
         {/* Input Form */}
         <form
           onSubmit={handleSendMessage}
-          className="border-t border-gray-200 bg-white px-6 py-4 rounded-b-lg"
+          className="rounded-b-2xl border-t border-[#d8e2d6] bg-white px-6 py-4"
         >
           <div className="flex gap-3">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about the statistics or type: show map, rankings, tax cards..."
+              placeholder="Share a question (example: compare Texas and Colorado for housing and taxes)."
               disabled={loading}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none disabled:bg-gray-100"
+              className="flex-1 rounded-xl border border-[#d0ddd0] px-4 py-2 text-sm text-[#2f3d46] focus:border-[#5f8fa0] focus:outline-none disabled:bg-[#f0f4ed]"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="rounded-lg bg-blue-600 px-6 py-2 text-white font-medium hover:bg-blue-700 disabled:bg-gray-300 transition-colors"
+              className="rounded-xl bg-[#5f8fa0] px-6 py-2 font-medium text-white transition-colors hover:bg-[#537f8f] disabled:bg-[#b7c8c1]"
             >
-              Send
+              Share
             </button>
           </div>
+          <p className="mt-2 text-xs text-[#7a868d]">People in your area are using this space to stay informed together.</p>
+          {communityConfirmation && (
+            <p className="mt-2 text-sm text-[#4d766e]">{communityConfirmation}</p>
+          )}
         </form>
       </div>
   );

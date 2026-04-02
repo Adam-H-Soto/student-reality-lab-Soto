@@ -49,13 +49,13 @@ export default function EnhancedAffordabilityMapWithModal(props: EnhancedAfforda
         }}
       />
       {isLoading && (
-        <div className="fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg animate-pulse">
+        <div className="fixed bottom-4 right-4 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 shadow-lg">
           Loading state details...
         </div>
       )}
       {/* Hidden element for accessibility - users can interact via chatbot */}
       <div className="sr-only" id="enhanced-map-note">
-        Interactive state details are available through the AI Statistics Assistant. Ask about any state&apos;s taxes,
+        Interactive state details are available through the research assistant. Ask about any state&apos;s taxes,
         housing, safety, or lifestyle information.
       </div>
       {/* Store handleStateClick reference for potential future use */}
